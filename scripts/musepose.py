@@ -24,10 +24,10 @@ def add_tab():
                         vid_dance_output = gr.Video(label="Aligned Pose Output will be displayed here")
                     with gr.Column(scale=3):
                         with gr.Column():
-                            nb_detect_resolution = gr.Number(label="Detect Resolution", value=512)
-                            nb_image_resolution = gr.Number(label="Image Resolution.", value=720)
-                            nb_align_frame = gr.Number(label="Align Frame", value=0)
-                            nb_max_frame = gr.Number(label="Max Frame", value=300)
+                            nb_detect_resolution = gr.Number(label="Detect Resolution", value=512, precision=0)
+                            nb_image_resolution = gr.Number(label="Image Resolution.", value=720, precision=0)
+                            nb_align_frame = gr.Number(label="Align Frame", value=0, precision=0)
+                            nb_max_frame = gr.Number(label="Max Frame", value=300, precision=0)
 
                         with gr.Row():
                             btn_algin_pose = gr.Button("ALIGN POSE",  variant="primary", scale=7)
