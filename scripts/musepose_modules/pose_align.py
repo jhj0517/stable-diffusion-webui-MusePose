@@ -6,10 +6,11 @@ import cv2
 import os
 import moviepy.video.io.ImageSequenceClip
 
-from pose.script.dwpose import DWposeDetector, draw_pose
-from pose.script.util import size_calculate, warpAffine_kps
+from scripts.musepose_modules.pose.script.dwpose import DWposeDetector, draw_pose
+from scripts.musepose_modules.pose.script.util import size_calculate, warpAffine_kps
 from scripts.musepose_modules.downloading_weights import download_models
 from scripts.musepose_modules.paths import *
+from modules import safe
 
 
 '''
@@ -246,10 +247,16 @@ def align_img(img, pose_ori, scales, detect_resolution, image_resolution):
 
 
 
-def run_align_video_with_filterPose_translate_smooth(args):
+def run_align_video_with_filterPose_translate_smooth(
+    vidfn: str,
+    imgfn_refer: str,
+    detect_resolution: int = 512,
+    image_resolution: int = 720,
+    align_frame: int = 0,
+    max_frame: int = 300,
+):
+    download_models()
 
-    vidfn=args.vidfn
-    imgfn_refer=args.imgfn_refer
     outfn=os.path.abspath(os.path.join(pose_output_dir, 'image_{}_video_{}_demo.mp4'))
     outfn_align_pose_video=os.path.abspath(os.path.join(pose_output_dir, 'image_{}_video_{}.mp4'))
     
@@ -265,29 +272,31 @@ def run_align_video_with_filterPose_translate_smooth(args):
     print("fps:", fps)
 
     H_in, W_in  = height, width
-    H_out, W_out = size_calculate(H_in,W_in,args.detect_resolution) 
-    H_out, W_out = size_calculate(H_out,W_out,args.image_resolution) 
+    H_out, W_out = size_calculate(H_in,W_in, detect_resolution)
+    H_out, W_out = size_calculate(H_out,W_out, image_resolution)
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    torch.load = safe.unsafe_torch_load
     detector = DWposeDetector(
-        det_config = args.yolox_config, 
-        det_ckpt = args.yolox_ckpt,
-        pose_config = args.dwpose_config, 
-        pose_ckpt = args.dwpose_ckpt, 
+        det_config = os.path.join(musepose_module_dir, "pose", "config", "yolox_l_8xb8-300e_coco.py"),
+        det_ckpt = os.path.join(models_dir, "dwpose", "yolox_l_8x8_300e_coco.pth"),
+        pose_config = os.path.join(musepose_module_dir, "pose", "config", "dwpose-l_384x288.py"),
+        pose_ckpt = os.path.join(models_dir, "dwpose", "dw-ll_ucoco_384.pth"),
         keypoints_only=False
-        )    
+    )
     detector = detector.to(device)
+    torch.load = safe.load
 
     refer_img = cv2.imread(imgfn_refer)
-    output_refer, pose_refer = detector(refer_img,detect_resolution=args.detect_resolution, image_resolution=args.image_resolution, output_type='cv2',return_pose_dict=True)
+    output_refer, pose_refer = detector(refer_img,detect_resolution=detect_resolution, image_resolution=image_resolution, output_type='cv2',return_pose_dict=True)
     body_ref_img  = pose_refer['bodies']['candidate']
     hands_ref_img = pose_refer['hands']
     faces_ref_img = pose_refer['faces']
     output_refer = cv2.cvtColor(output_refer, cv2.COLOR_RGB2BGR)
     
 
-    skip_frames = args.align_frame
-    max_frame = args.max_frame
+    skip_frames = align_frame
+    max_frame = max_frame
     pose_list, video_frame_buffer, video_pose_buffer = [], [], []
 
 
@@ -318,7 +327,7 @@ def run_align_video_with_filterPose_translate_smooth(args):
        
         # estimate scale parameters by the 1st frame in the video
         if i==skip_frames:
-            output_1st_img, pose_1st_img = detector(img, args.detect_resolution, args.image_resolution, output_type='cv2', return_pose_dict=True)
+            output_1st_img, pose_1st_img = detector(img, detect_resolution, image_resolution, output_type='cv2', return_pose_dict=True)
             body_1st_img  = pose_1st_img['bodies']['candidate']
             hands_1st_img = pose_1st_img['hands']
             faces_1st_img = pose_1st_img['faces']
@@ -445,9 +454,9 @@ def run_align_video_with_filterPose_translate_smooth(args):
         
     
         # pose align
-        pose_img, pose_ori = detector(img, args.detect_resolution, args.image_resolution, output_type='cv2', return_pose_dict=True)
+        pose_img, pose_ori = detector(img, detect_resolution, image_resolution, output_type='cv2', return_pose_dict=True)
         video_pose_buffer.append(pose_img)
-        pose_align = align_img(img, pose_ori, align_args, args.detect_resolution, args.image_resolution)
+        pose_align = align_img(img, pose_ori, align_args, detect_resolution, image_resolution)
         
 
         # add centre offset
@@ -515,6 +524,7 @@ def run_align_video_with_filterPose_translate_smooth(args):
     clip = moviepy.video.io.ImageSequenceClip.ImageSequenceClip(result_pose_only, fps=fps)
     clip.write_videofile(outfn_align_pose_video, fps=fps)
     print('pose align done')
+    return outfn_align_pose_video
 
 
 
