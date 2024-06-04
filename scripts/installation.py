@@ -8,7 +8,7 @@ sd_webui_dir = os.path.abspath(os.path.join(extension_dir, '..', '..'))
 
 def install_package(install_command):
     print(f"MusePose Extension: Installing {install_command}")
-    subprocess.check_call([sys.executable, "-m", "pip", "install"] + install_command.split())
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "-q"] + install_command.split())
 
 
 def install_musepose():
