@@ -1,10 +1,7 @@
-import os
 import subprocess
 import sys
 
-extension_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-sd_webui_dir = os.path.abspath(os.path.join(extension_dir, '..', '..'))
-
+from scripts.musepose_modules.paths import *
 
 def install_package(install_command):
     print(f"MusePose Extension: Installing {install_command}")
