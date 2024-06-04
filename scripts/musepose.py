@@ -1,12 +1,13 @@
-from scripts.installation import *
-#install_musepose()
-from scripts.musepose_modules.ui_utils import *
-
 import gradio as gr
 import os
+
+from scripts.installation import *
+from scripts.musepose_modules.ui_utils import *
 from modules import scripts, script_callbacks
 
-musepose_inf = 3
+install_musepose()
+
+musepose_inf = None
 
 def add_tab():
     with gr.Blocks() as tab:
