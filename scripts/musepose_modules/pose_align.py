@@ -8,7 +8,8 @@ import moviepy.video.io.ImageSequenceClip
 
 from pose.script.dwpose import DWposeDetector, draw_pose
 from pose.script.util import size_calculate, warpAffine_kps
-
+from scripts.musepose_modules.downloading_weights import download_models
+from scripts.musepose_modules.paths import *
 
 
 '''
@@ -249,7 +250,8 @@ def run_align_video_with_filterPose_translate_smooth(args):
 
     vidfn=args.vidfn
     imgfn_refer=args.imgfn_refer
-    outfn=args.outfn
+    outfn=os.path.abspath(os.path.join(pose_output_dir, 'image_{}_video_{}_demo.mp4'))
+    outfn_align_pose_video=os.path.abspath(os.path.join(pose_output_dir, 'image_{}_video_{}.mp4'))
     
     video = cv2.VideoCapture(vidfn)
     width= video.get(cv2.CAP_PROP_FRAME_WIDTH)
@@ -511,7 +513,7 @@ def run_align_video_with_filterPose_translate_smooth(args):
     clip = moviepy.video.io.ImageSequenceClip.ImageSequenceClip(result_demo, fps=fps)
     clip.write_videofile(outfn, fps=fps)
     clip = moviepy.video.io.ImageSequenceClip.ImageSequenceClip(result_pose_only, fps=fps)
-    clip.write_videofile(args.outfn_align_pose_video, fps=fps)
+    clip.write_videofile(outfn_align_pose_video, fps=fps)
     print('pose align done')
 
 
