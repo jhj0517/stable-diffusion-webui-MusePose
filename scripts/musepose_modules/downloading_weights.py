@@ -23,7 +23,12 @@ def download_models():
 
     # saving weights
     for url, path in tqdm(zip(urls, paths)):
-        filename = wget.download(url, f'{models_dir}/{path}')
+        filename = os.path.basename(url)
+        full_path = os.path.join(models_dir, path, filename)
+
+        if not os.path.exists(full_path):
+            print(f"{filename} does not exists. Downloading to {path}..")
+            wget.download(url, full_path)
 
     config_urls = ['https://huggingface.co/lambdalabs/sd-image-variations-diffusers/resolve/main/unet/config.json',
                'https://huggingface.co/lambdalabs/sd-image-variations-diffusers/resolve/main/image_encoder/config.json',
@@ -33,8 +38,14 @@ def download_models():
 
     # saving config files
     for url, path in tqdm(zip(config_urls, config_paths)):
-        filename = wget.download(url, f'{models_dir}/{path}')
+        filename = os.path.basename(url)
+        full_path = os.path.join(models_dir, path, filename)
+
+        if not os.path.exists(full_path):
+            print(f"{filename} does not exists. Downloading to {path}..")
+            wget.download(url, full_path)
 
     # renaming model name as given in readme
-    os.rename(f'{models_dir}/dwpose/yolox_l_8x8_300e_coco_20211126_140236-d3bd2b23.pth',
-              f'{models_dir}/dwpose/yolox_l_8x8_300e_coco.pth')
+    wrong_file_name = f'{models_dir}/dwpose/yolox_l_8x8_300e_coco_20211126_140236-d3bd2b23.pth'
+    if os.path.exists(wrong_file_name):
+        os.rename(wrong_file_name, f'{models_dir}/dwpose/yolox_l_8x8_300e_coco.pth')
