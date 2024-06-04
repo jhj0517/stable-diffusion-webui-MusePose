@@ -1,6 +1,6 @@
 av==11.0.0
 decord==0.6.0
-diffusers>=0.24.0,<=0.27.2
+diffusers==0.27.2
 imageio-ffmpeg==0.4.9
 ffmpeg-python==0.2.0
 open-clip-torch==2.20.0
