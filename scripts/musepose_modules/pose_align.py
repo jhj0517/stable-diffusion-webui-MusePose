@@ -248,8 +248,8 @@ def align_img(img, pose_ori, scales, detect_resolution, image_resolution):
 
 
 def run_align_video_with_filterPose_translate_smooth(
-    vidfn: str,
-    imgfn_refer: str,
+    vidfn,
+    imgfn_refer,
     detect_resolution: int = 512,
     image_resolution: int = 720,
     align_frame: int = 0,
@@ -257,8 +257,9 @@ def run_align_video_with_filterPose_translate_smooth(
 ):
     download_models()
 
-    outfn=os.path.abspath(os.path.join(pose_output_dir, 'image_{}_video_{}_demo.mp4'))
-    outfn_align_pose_video=os.path.abspath(os.path.join(pose_output_dir, 'image_{}_video_{}.mp4'))
+    img_temp, vid_temp = os.path.basename(imgfn_refer), os.path.basename(vidfn)
+    outfn=os.path.abspath(os.path.join(pose_output_dir, f'image_{img_temp}_video_{vid_temp}_demo.mp4'))
+    outfn_align_pose_video=os.path.abspath(os.path.join(pose_output_dir, f'image_{img_temp}_video_{vid_temp}.mp4'))
     
     video = cv2.VideoCapture(vidfn)
     width= video.get(cv2.CAP_PROP_FRAME_WIDTH)
