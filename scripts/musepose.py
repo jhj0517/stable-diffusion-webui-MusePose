@@ -25,7 +25,7 @@ def add_tab():
                     with gr.Column(scale=3):
                         with gr.Column():
                             nb_detect_resolution = gr.Number(label="Detect Resolution", value=512)
-                            nb_image_resolution = gr.Number(label="Image Resolution", value=720)
+                            nb_image_resolution = gr.Number(label="Image Resolution.", value=720)
                             nb_align_frame = gr.Number(label="Align Frame", value=0)
                             nb_max_frame = gr.Number(label="Max Frame", value=300)
 
