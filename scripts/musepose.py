@@ -18,7 +18,7 @@ def add_tab():
             with gr.TabItem('Align Pose'):
                 with gr.Row():
                     with gr.Column(scale=3):
-                        img_input = gr.Image(label="Input Image here", scale=5)
+                        img_input = gr.Image(label="Input Image here", type="filepath", scale=5)
                         vid_dance_input = gr.Video(label="Input Dance Video", scale=5)
                     with gr.Column(scale=3):
                         vid_dance_output = gr.Video(label="Aligned Pose Output will be displayed here")
