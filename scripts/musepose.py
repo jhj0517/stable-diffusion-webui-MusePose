@@ -40,7 +40,7 @@ def add_tab():
             with gr.TabItem('MusePose Inference'):
                 with gr.Row():
                     with gr.Column(scale=3):
-                        img_input = gr.Image(label="Input Image here", scale=5)
+                        img_input = gr.Image(label="Input Image here", type="filepath", scale=5)
                         vid_pose_input = gr.Video(label="Input Aligned Pose Video here", scale=5)
                     with gr.Column(scale=3):
                         vid_output = gr.Video(label="Output Video will be displayed here", scale=8)
@@ -49,16 +49,16 @@ def add_tab():
                         with gr.Column():
                             weight_dtype = gr.Dropdown(label="Compute Type", choices=["float16", "float32"],
                                                        value="float16")
-                            nb_width = gr.Number(label="Width", value=768)
-                            nb_height = gr.Number(label="Height", value=768)
-                            nb_video_frame_length = gr.Number(label="Video Frame Length", value=300)
-                            nb_video_slice_frame_length = gr.Number(label="Video Slice Frame Number", value=48)
-                            nb_video_slice_overlap_frame_number = gr.Number(label="Video Slice Overlap Frame Number", value=4)
-                            nb_cfg = gr.Number(label="CFG (Classifier Free Guidance)", value=3.5)
-                            nb_seed = gr.Number(label="Seed", value=99)
-                            nb_steps = gr.Number(label="DDIM Sampling Steps", value=20)
-                            nb_fps = gr.Number(label="FPS (Frames Per Second)", value=30)
-                            nb_skip = gr.Number(label="SKIP (Frame Sample Rate = SKIP+1)", value=1)
+                            nb_width = gr.Number(label="Width", value=768, precision=0)
+                            nb_height = gr.Number(label="Height", value=768, precision=0)
+                            nb_video_frame_length = gr.Number(label="Video Frame Length", value=300, precision=0)
+                            nb_video_slice_frame_length = gr.Number(label="Video Slice Frame Number", value=48, precision=0)
+                            nb_video_slice_overlap_frame_number = gr.Number(label="Video Slice Overlap Frame Number", value=4, precision=0)
+                            nb_cfg = gr.Number(label="CFG (Classifier Free Guidance)", value=3.5, precision=0)
+                            nb_seed = gr.Number(label="Seed", value=99, precision=0)
+                            nb_steps = gr.Number(label="DDIM Sampling Steps", value=20, precision=0)
+                            nb_fps = gr.Number(label="FPS (Frames Per Second)", value=30, precision=0)
+                            nb_skip = gr.Number(label="SKIP (Frame Sample Rate = SKIP+1)", value=1, precision=0)
 
                         with gr.Row():
                             btn_generate = gr.Button("GENERATE", variant="primary", scale=7)
