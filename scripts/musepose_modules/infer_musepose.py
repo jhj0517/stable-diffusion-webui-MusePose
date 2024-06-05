@@ -54,6 +54,10 @@ def infer_musepose(
     print('DDIM sampling steps :', steps)
     print("skip", skip)
 
+    dt_file_name = datetime.now().strftime("%y-%m-%d_%Hh%Mm%Ss")
+    output_path = os.path.abspath(os.path.join(final_output_dir, f'{dt_file_name}.mp4'))
+    output_path_demo = os.path.abspath(os.path.join(final_output_dir, f'{dt_file_name}_demo.mp4'))
+
     if weight_dtype == "fp16":
         weight_dtype = torch.float16
     else:
@@ -117,12 +121,7 @@ def infer_musepose(
     pipe = pipe.to("cuda", dtype=weight_dtype)
     pipe = pipe.to("cuda", dtype=weight_dtype)
 
-    date_str = datetime.now().strftime("%Y%m%d")
-    time_str = datetime.now().strftime("%H%M")
-
-    print('handle===', ref_image_path, pose_video_path)
-    ref_name = Path(ref_image_path).stem
-    pose_name = Path(pose_video_path).stem.replace("_kps", "")
+    print('image: ', ref_image_path, "pose_video: ", pose_video_path)
 
     ref_image_pil = Image.open(ref_image_path).convert("RGB")
 
@@ -178,29 +177,24 @@ def infer_musepose(
         context_overlap=O,
     ).videos
 
-    m1 = os.path.join(models_dir, "MusePose","pose_guider.pth").split('.')[0].split('/')[-1] #check
-    m2 = os.path.join(models_dir, "MusePose","motion_module.pth").split('.')[0].split('/')[-1]
-
-    save_dir_name = f"{time_str}-{cfg}-{m1}-{m2}"
-
     result = scale_video(video[:, :, :L], original_width, original_height)
     save_videos_grid(
         result,
-        os.path.join(final_output_dir, f"{save_dir_name}.mp4"),
+        output_path,
         n_rows=1,
         fps=src_fps if fps is None else fps,
     )
 
     video = torch.cat([ref_image_tensor, pose_tensor[:, :, :L], video[:, :, :L]], dim=0)
     video = scale_video(video, original_width, original_height)
-    output_path = os.path.join(final_output_dir, f"{ref_name}_{pose_name}_{cfg}_{steps}_{skip}_{m1}_{m2}.mp4")
     save_videos_grid(
         video,
-        output_path,
+        output_path_demo,
         n_rows=3,
         fps=src_fps if fps is None else fps,
     )
 
     return output_path
+
 
 
