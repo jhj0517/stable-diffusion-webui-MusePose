@@ -45,6 +45,15 @@ def infer_musepose(
     fps: int,
     skip: int
 ):
+    print('Width:', W)
+    print('Height:', H)
+    print('Length:', L)
+    print('Slice:', S)
+    print('Overlap:', O)
+    print('Classifier free guidance:', cfg)
+    print('DDIM sampling steps :', steps)
+    print("skip", skip)
+
     if weight_dtype == "fp16":
         weight_dtype = torch.float16
     else:
@@ -77,7 +86,6 @@ def infer_musepose(
     image_enc = CLIPVisionModelWithProjection.from_pretrained(
         os.path.join(models_dir, "image_encoder")
     ).to(dtype=weight_dtype, device="cuda")
-    torch.load = safe.load
 
     sched_kwargs = OmegaConf.to_container(infer_config.noise_scheduler_kwargs)
     scheduler = DDIMScheduler(**sched_kwargs)
@@ -97,7 +105,7 @@ def infer_musepose(
     pose_guider.load_state_dict(
         torch.load(os.path.join(models_dir, "MusePose","pose_guider.pth"), map_location="cpu"),
     )
-
+    torch.load = safe.load
     pipe = Pose2VideoPipeline(
         vae=vae,
         image_encoder=image_enc,
