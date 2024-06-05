@@ -170,20 +170,18 @@ def infer_musepose(
     m2 = os.path.join(models_dir, "MusePose","motion_module.pth").split('.')[0].split('/')[-1]
 
     save_dir_name = f"{time_str}-{cfg}-{m1}-{m2}"
-    save_dir = Path(f"./output/video-{date_str}/{save_dir_name}")
-    save_dir.mkdir(exist_ok=True, parents=True)
 
     result = scale_video(video[:, :, :L], original_width, original_height)
     save_videos_grid(
         result,
-        f"{save_dir}/{ref_name}_{pose_name}_{cfg}_{steps}_{skip}.mp4",
+        os.path.join(final_output_dir, f"{save_dir_name}.mp4"),
         n_rows=1,
         fps=src_fps if fps is None else fps,
     )
 
     video = torch.cat([ref_image_tensor, pose_tensor[:, :, :L], video[:, :, :L]], dim=0)
     video = scale_video(video, original_width, original_height)
-    output_path = f"{save_dir}/{ref_name}_{pose_name}_{cfg}_{steps}_{skip}_{m1}_{m2}.mp4"
+    output_path = os.path.join(final_output_dir, f"{ref_name}_{pose_name}_{cfg}_{steps}_{skip}_{m1}_{m2}.mp4")
     save_videos_grid(
         video,
         output_path,
