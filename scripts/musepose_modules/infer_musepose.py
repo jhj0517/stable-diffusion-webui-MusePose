@@ -20,36 +20,6 @@ from scripts.musepose_modules.musepose.pipelines.pipeline_pose2vid_long import P
 from scripts.musepose_modules.musepose.utils.util import get_fps, read_frames, save_videos_grid
 from scripts.musepose_modules.paths import *
 
-
-def parse_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--config", type=str, default="./configs/test_stage_2.yaml")
-    parser.add_argument("-W", type=int, default=768, help="Width")
-    parser.add_argument("-H", type=int, default=768, help="Height")
-    parser.add_argument("-L", type=int, default=300, help="video frame length")
-    parser.add_argument("-S", type=int, default=48, help="video slice frame number")
-    parser.add_argument("-O", type=int, default=4, help="video slice overlap frame number")
-
-    parser.add_argument("--cfg", type=float, default=3.5, help="Classifier free guidance")
-    parser.add_argument("--seed", type=int, default=99)
-    parser.add_argument("--steps", type=int, default=20, help="DDIM sampling steps")
-    parser.add_argument("--fps", type=int)
-
-    parser.add_argument("--skip", type=int, default=1, help="frame sample rate = (skip+1)")
-    args = parser.parse_args()
-
-    print('Width:', args.W)
-    print('Height:', args.H)
-    print('Length:', args.L)
-    print('Slice:', args.S)
-    print('Overlap:', args.O)
-    print('Classifier free guidance:', args.cfg)
-    print('DDIM sampling steps :', args.steps)
-    print("skip", args.skip)
-
-    return args
-
-
 def scale_video(video, width, height):
     video_reshaped = video.view(-1, *video.shape[2:])  # [batch*frames, channels, height, width]
     scaled_video = F.interpolate(video_reshaped, size=(height, width), mode='bilinear', align_corners=False)
@@ -60,6 +30,8 @@ def scale_video(video, width, height):
 
 
 def infer_musepose(
+    ref_image_path: str,
+    pose_video_path: str,
     weight_dtype: str,
     W: int,
     H: int,
