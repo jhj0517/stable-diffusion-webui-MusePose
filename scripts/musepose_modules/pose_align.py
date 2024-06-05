@@ -5,6 +5,7 @@ import copy
 import cv2
 import os
 import moviepy.video.io.ImageSequenceClip
+from datetime import datetime
 
 from scripts.musepose_modules.pose.script.dwpose import DWposeDetector, draw_pose
 from scripts.musepose_modules.pose.script.util import size_calculate, warpAffine_kps
@@ -257,9 +258,9 @@ def run_align_video_with_filterPose_translate_smooth(
 ):
     download_models()
 
-    img_temp, vid_temp = os.path.basename(imgfn_refer), os.path.basename(vidfn)
-    outfn=os.path.abspath(os.path.join(pose_output_dir, f'image_{img_temp}_video_{vid_temp}_demo.mp4'))
-    outfn_align_pose_video=os.path.abspath(os.path.join(pose_output_dir, f'image_{img_temp}_video_{vid_temp}.mp4'))
+    dt_file_name = datetime.now().strftime("%y-%m-%d_%Hh%Mm%Ss")
+    outfn=os.path.abspath(os.path.join(pose_output_dir, f'{dt_file_name}_demo.mp4'))
+    outfn_align_pose_video=os.path.abspath(os.path.join(pose_output_dir, f'{dt_file_name}.mp4'))
     
     video = cv2.VideoCapture(vidfn)
     width= video.get(cv2.CAP_PROP_FRAME_WIDTH)
