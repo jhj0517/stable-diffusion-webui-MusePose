@@ -248,7 +248,7 @@ def align_img(img, pose_ori, scales, detect_resolution, image_resolution):
 
 
 
-def run_align_video_with_filterPose_translate_smooth(
+def align_pose(
     vidfn,
     imgfn_refer,
     detect_resolution: int = 512,
@@ -527,44 +527,3 @@ def run_align_video_with_filterPose_translate_smooth(
     clip.write_videofile(outfn_align_pose_video, fps=fps)
     print('pose align done')
     return outfn_align_pose_video
-
-
-
-def main():
-    parser = argparse.ArgumentParser()
-
-    parser.add_argument('--detect_resolution', type=int, default=512, help='detect_resolution')
-    parser.add_argument('--image_resolution', type=int, default=720, help='image_resolution')
-
-    parser.add_argument("--yolox_config",  type=str, default="./pose/config/yolox_l_8xb8-300e_coco.py")
-    parser.add_argument("--dwpose_config", type=str, default="./pose/config/dwpose-l_384x288.py")
-    parser.add_argument("--yolox_ckpt",  type=str, default="./pretrained_weights/dwpose/yolox_l_8x8_300e_coco.pth")
-    parser.add_argument("--dwpose_ckpt", type=str, default="./pretrained_weights/dwpose/dw-ll_ucoco_384.pth")
-
-
-    parser.add_argument('--align_frame', type=int, default=0, help='the frame index of the video to align')
-    parser.add_argument('--max_frame', type=int, default=300, help='maximum frame number of the video to align')
-    parser.add_argument('--imgfn_refer', type=str, default="./assets/images/0.jpg", help='refer image path')
-    parser.add_argument('--vidfn', type=str, default="./assets/videos/0.mp4", help='Input video path')
-    parser.add_argument('--outfn_align_pose_video', type=str, default=None, help='output path of the aligned video of the refer img')
-    parser.add_argument('--outfn', type=str, default=None, help='Output path of the alignment visualization')
-    args = parser.parse_args()
-    
-    if not os.path.exists("./assets/poses/align"):
-        # os.makedirs("./assets/poses/")
-        os.makedirs("./assets/poses/align")
-        os.makedirs("./assets/poses/align_demo")
-        
-    img_name = os.path.basename(args.imgfn_refer).split('.')[0]
-    video_name = os.path.basename(args.vidfn).split('.')[0]
-    if args.outfn_align_pose_video is None:
-        args.outfn_align_pose_video = "./assets/poses/align/img_{}_video_{}.mp4".format(img_name, video_name)
-    if args.outfn is None:
-        args.outfn = "./assets/poses/align_demo/img_{}_video_{}.mp4".format(img_name, video_name)
-
-    run_align_video_with_filterPose_translate_smooth(args)
-
-
-    
-if __name__ == '__main__':
-    main()
