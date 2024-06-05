@@ -19,6 +19,7 @@ from scripts.musepose_modules.musepose.models.unet_3d import UNet3DConditionMode
 from scripts.musepose_modules.musepose.pipelines.pipeline_pose2vid_long import Pose2VideoPipeline
 from scripts.musepose_modules.musepose.utils.util import get_fps, read_frames, save_videos_grid
 from scripts.musepose_modules.paths import *
+from modules import safe
 
 def scale_video(video, width, height):
     video_reshaped = video.view(-1, *video.shape[2:])  # [batch*frames, channels, height, width]
@@ -60,6 +61,8 @@ def infer_musepose(
 
     inference_config_path = os.path.join(musepose_module_dir, "configs", "inference_v2.yaml")
     infer_config = OmegaConf.load(inference_config_path)
+
+    torch.load = safe.unsafe_torch_load
     denoising_unet = UNet3DConditionModel.from_pretrained_2d(
         Path(os.path.join(models_dir, "sd-image-variations-diffusers")),
         Path(os.path.join(models_dir, "MusePose","motion_module.pth")),
@@ -72,8 +75,9 @@ def infer_musepose(
     )
 
     image_enc = CLIPVisionModelWithProjection.from_pretrained(
-        os.path.join(models_dir, "image_encoder_path")
+        os.path.join(models_dir, "image_encoder")
     ).to(dtype=weight_dtype, device="cuda")
+    torch.load = safe.load
 
     sched_kwargs = OmegaConf.to_container(infer_config.noise_scheduler_kwargs)
     scheduler = DDIMScheduler(**sched_kwargs)

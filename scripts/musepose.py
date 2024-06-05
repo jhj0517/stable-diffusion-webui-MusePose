@@ -37,7 +37,7 @@ def add_tab():
                                  inputs=[vid_dance_input, img_input, nb_detect_resolution, nb_image_resolution, nb_align_frame, nb_max_frame],
                                  outputs=[vid_dance_output])
 
-            with gr.TabItem('Inferring MusePose'):
+            with gr.TabItem('MusePose Inference'):
                 with gr.Row():
                     with gr.Column(scale=3):
                         img_input = gr.Image(label="Input Image here", scale=5)
@@ -58,7 +58,7 @@ def add_tab():
                             nb_seed = gr.Number(label="Seed", value=99)
                             nb_steps = gr.Number(label="DDIM Sampling Steps", value=20)
                             nb_fps = gr.Number(label="FPS (Frames Per Second)", value=30)
-                            nb_skip = gr.Number(label="SKIP (Frame Sample Rate = SKIP+1)", value=1, info="frame sample rate = (skip+1)")
+                            nb_skip = gr.Number(label="SKIP (Frame Sample Rate = SKIP+1)", value=1)
 
                         with gr.Row():
                             btn_generate = gr.Button("GENERATE", variant="primary", scale=7)
