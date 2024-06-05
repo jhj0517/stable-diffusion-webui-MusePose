@@ -5,11 +5,13 @@ from scripts.installation import *
 install_musepose()
 from scripts.musepose_modules.ui_utils import *
 from scripts.musepose_modules.paths import *
-from scripts.musepose_modules.pose_align import align_pose
-from scripts.musepose_modules.infer_musepose import infer_musepose
+from scripts.musepose_modules.pose_align import PoseAlignmentInference
+from scripts.musepose_modules.infer_musepose import MusePoseInference
 
 from modules import scripts, script_callbacks
 
+musepose_infer = MusePoseInference()
+pose_alignment_infer = PoseAlignmentInference()
 
 def add_tab():
     with gr.Blocks() as tab:
@@ -33,7 +35,7 @@ def add_tab():
                             btn_open_pose_output_folder = gr.Button("📁", scale=3)
 
             btn_open_pose_output_folder.click(fn=lambda: open_folder(pose_output_dir), inputs=None, outputs=None)
-            btn_algin_pose.click(fn=align_pose,
+            btn_algin_pose.click(fn=pose_alignment_infer.align_pose,
                                  inputs=[vid_dance_input, img_input, nb_detect_resolution, nb_image_resolution, nb_align_frame, nb_max_frame],
                                  outputs=[vid_dance_output])
 
@@ -65,7 +67,7 @@ def add_tab():
                             btn_open_final_output_folder = gr.Button("📁", scale=3)
 
             btn_open_final_output_folder.click(fn=lambda: open_folder(final_output_dir), inputs=None, outputs=None)
-            btn_generate.click(fn=infer_musepose,
+            btn_generate.click(fn=musepose_infer.infer_musepose,
                                inputs=[img_input, vid_pose_input, weight_dtype, nb_width, nb_height, nb_video_frame_length,
                                        nb_video_slice_frame_length, nb_video_slice_overlap_frame_number, nb_cfg, nb_seed,
                                        nb_steps, nb_fps, nb_skip],
@@ -75,7 +77,10 @@ def add_tab():
 
 
 def on_unload():
-    pass
+    global musepose_infer
+    global pose_alignment_infer
+    musepose_infer = None
+    pose_alignment_infer = None
 
 script_callbacks.on_ui_tabs(add_tab)
 script_callbacks.on_script_unloaded(on_unload)
