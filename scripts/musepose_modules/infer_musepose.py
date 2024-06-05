@@ -18,6 +18,7 @@ from scripts.musepose_modules.musepose.models.unet_2d_condition import UNet2DCon
 from scripts.musepose_modules.musepose.models.unet_3d import UNet3DConditionModel
 from scripts.musepose_modules.musepose.pipelines.pipeline_pose2vid_long import Pose2VideoPipeline
 from scripts.musepose_modules.musepose.utils.util import get_fps, read_frames, save_videos_grid
+from scripts.musepose_modules.downloading_weights import download_models
 from scripts.musepose_modules.paths import *
 from modules import safe
 
@@ -46,6 +47,7 @@ class MusePoseInference:
         fps: int,
         skip: int
     ):
+        download_models()
         print('Width:', W)
         print('Height:', H)
         print('Length:', L)
