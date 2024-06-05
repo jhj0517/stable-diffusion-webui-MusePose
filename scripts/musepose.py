@@ -47,7 +47,7 @@ def add_tab():
 
                     with gr.Column(scale=3):
                         with gr.Column():
-                            weight_dtype = gr.DropDown(label="Compute Type", choices=["float16", "float32"],
+                            weight_dtype = gr.Dropdown(label="Compute Type", choices=["float16", "float32"],
                                                        value="float16")
                             nb_width = gr.Number(label="Width", value=768)
                             nb_height = gr.Number(label="Height", value=768)
@@ -57,7 +57,7 @@ def add_tab():
                             nb_cfg = gr.Number(label="Classifier Free Guidance", value=3.5)
                             nb_seed = gr.Number(label="Random Seed", value=99)
                             nb_steps = gr.Number(label="DDIM Sampling Steps", value=20)
-                            nb_fps = gr.Number(label="FPS (Frames Per Second)", value=30)  # Assuming a default value for fps
+                            nb_fps = gr.Number(label="FPS (Frames Per Second)", value=30)
                             nb_skip = gr.Number(label="SKIP (Frame Sample Rate = SKIP+1)", value=1, info="frame sample rate = (skip+1)")
 
                         with gr.Row():
