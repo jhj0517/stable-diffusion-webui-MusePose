@@ -6,7 +6,7 @@ install_musepose()
 from scripts.musepose_modules.ui_utils import *
 from scripts.musepose_modules.paths import *
 from scripts.musepose_modules.pose_align import PoseAlignmentInference
-from scripts.musepose_modules.infer_musepose import MusePoseInference
+from scripts.musepose_modules.musepose_inference import MusePoseInference
 
 from modules import scripts, script_callbacks
 
