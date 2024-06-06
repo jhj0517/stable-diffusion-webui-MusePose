@@ -50,7 +50,7 @@ The output will be saved in
 - Download & unzip this [repository](https://github.com/jhj0517/stable-diffusion-webui-MusePose/zipball/master) to `path_to_sd_webui\extensions\`
 - Input image & input dancing video and click "ALIGN POSE" button in **Step1: Pose Alignment** tab.
 ![step1](https://github.com/jhj0517/stable-diffusion-webui-MusePose/assets/97279763/54a787ee-5bbc-4889-a9a9-453195fdab0b)
-Once the process is done, the output will be displayed in the right cell and saved in `path_to_sd_webui\outputs\MusePose\pose_alignment`.
+Once the process is done, the aligned pose video will be saved in `path_to_sd_webui\outputs\MusePose\pose_alignment`.
 - Input image & input the extract pose video and click "GENERATE" button in **Step2: MusePose Inference** tab.
 ![step2](https://github.com/jhj0517/stable-diffusion-webui-MusePose/assets/97279763/30058906-06e2-4700-b622-bc023cb40d53)
 Once the process is done, the output will be displayed in the right cell and saved in `path_to_sd_webui\outputs\MusePose\musepose_inference`. 
