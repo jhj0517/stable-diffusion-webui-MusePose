@@ -1,7 +1,8 @@
 # MusePose SD WebUI Extension
 [MusePose](https://github.com/TMElyralab/MusePose) extension for the [SD WebUI](https://github.com/AUTOMATIC1111/stable-diffusion-webui).
+
 ## OverView
-When running, this will download **total 9 models** on your `path_to_sd_webui\models\` directory if there're no models.
+When running, this will download a **total of 9 models** to your `path_to_sd_webui\models\` directory if there are no models.
 ```
 ./models/
 |-- MusePose
@@ -23,14 +24,33 @@ When running, this will download **total 9 models** on your `path_to_sd_webui\mo
     |-- config.json
     └── diffusion_pytorch_model.bin
 ```
-MusePose works roughly through two process.
+MusePose works through a two step process.
  
-Step1 - Extract proper pose (skeleton) from input image & input dance video. 
-
-For pose extraction, it will use:
+Step1 - Extract pose (skeleton) video from input dance video & input image.<br>
+These models will be used for this step:
 - `yolox_l_8x8_300e_coco.pth`
 - `dw-ll_ucoco_384.pth`
+  
+The extracted pose video output will be saved in `path_to_sd_webui\outputs\MusePose\aligned_pose`.
 
-Step2 - Infer MusePose from extracted pose video & input image
-For MusePose inference, it will use:
-- rest of theme
+Step2 - Make the image move from the input image & the extracted pose video.<br>
+These models will be used for this step:
+- `denoising_unet.pth`
+- `motion_module.pth`
+- `pose_guider.pth`
+- `reference_unet.pth`
+- `sd-image-variations-diffusers`
+- `image_encoder`
+- `sd-vae-ft-mse`
+
+The output will be saved in 
+`path_to_sd_webui\outputs\MusePose\inference_musepose`
+
+# How to Install & Use
+- Download & unzip this [repository](https://github.com/jhj0517/stable-diffusion-webui-MusePose/zipball/master) to `path_to_sd_webui\extensions\`
+- Input image & input dancing video and click "ALIGN POSE" button in **Step1: Pose Alignment** tab.
+![step1](https://github.com/jhj0517/stable-diffusion-webui-MusePose/assets/97279763/54a787ee-5bbc-4889-a9a9-453195fdab0b)
+Once the process is done, the output will be displayed in the right cell and saved in `path_to_sd_webui\outputs\MusePose\pose_alignment`.
+- Input image & input the extract pose video and click "GENERATE" button in **Step2: MusePose Inference** tab.
+![step2](https://github.com/jhj0517/stable-diffusion-webui-MusePose/assets/97279763/30058906-06e2-4700-b622-bc023cb40d53)
+Once the process is done, the output will be displayed in the right cell and saved in `path_to_sd_webui\outputs\MusePose\musepose_inference`. 
