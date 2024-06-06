@@ -56,3 +56,16 @@ Once the process is done, the aligned pose video will be saved in `path_to_sd_we
 - Input image & input the extract pose video from step1 and click "GENERATE" button in **Step2: MusePose Inference** tab.
 ![step2](https://github.com/jhj0517/stable-diffusion-webui-MusePose/assets/97279763/30058906-06e2-4700-b622-bc023cb40d53)
 Once the process is done, the output will be displayed in the right cell and saved in `path_to_sd_webui\outputs\MusePose\musepose_inference`. 
+
+### Troubleshooting for Forge
+If you are using [Forge](https://github.com/lllyasviel/stable-diffusion-webui-forge) instead of just SD WebUI, you need to do some workarounds because of the different dependency issue.<br>
+If you get a "cvDestroyAllWindows" error, run
+```
+pip uninstall opencv-python-headless
+pip uninstall opencv-python
+pip uninstall opencv-contrib-python
+pip install opencv-python
+pip install opencv-contrib-python
+```
+
+
