@@ -30,6 +30,7 @@ class MusePoseInference:
         self.denoising_unet = None
         self.pose_guider = None
         self.image_enc = None
+        self.pipe = None
 
     def infer_musepose(
         self,
@@ -113,7 +114,7 @@ class MusePoseInference:
             torch.load(os.path.join(models_dir, "MusePose","pose_guider.pth"), map_location="cpu"),
         )
         torch.load = safe.load
-        pipe = Pose2VideoPipeline(
+        self.pipe = Pose2VideoPipeline(
             vae=self.vae,
             image_encoder=self.image_enc,
             reference_unet=self.reference_unet,
@@ -121,8 +122,7 @@ class MusePoseInference:
             pose_guider=self.pose_guider,
             scheduler=scheduler,
         )
-        pipe = pipe.to("cuda", dtype=weight_dtype)
-        pipe = pipe.to("cuda", dtype=weight_dtype)
+        self.pipe = self.pipe.to("cuda", dtype=weight_dtype)
 
         print('image: ', ref_image_path, "pose_video: ", pose_video_path)
 
@@ -166,7 +166,7 @@ class MusePoseInference:
         pose_tensor = pose_tensor.transpose(0, 1)
         pose_tensor = pose_tensor.unsqueeze(0)
 
-        video = pipe(
+        video = self.pipe(
             ref_image_pil,
             pose_list,
             width,
