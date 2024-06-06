@@ -26,6 +26,8 @@ When running, this will download a **total of 9 models** (15GB total) to your `p
     |-- config.json
     └── diffusion_pytorch_model.bin
 ```
+You can also manually download the models in the links [here](https://github.com/TMElyralab/MusePose?tab=readme-ov-file#download-weights), if you want.
+
 MusePose works through a two step process.
  
 Step1 - Extract pose (skeleton) video from input dance video & input image.<br>
