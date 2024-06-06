@@ -51,8 +51,8 @@ def add_tab():
                         with gr.Column():
                             weight_dtype = gr.Dropdown(label="Compute Type", choices=["float16", "float32"],
                                                        value="float16")
-                            nb_width = gr.Number(label="Width", value=512, precision=0)
-                            nb_height = gr.Number(label="Height", value=512, precision=0)
+                            nb_width = gr.Number(label="Width.", value=512, precision=0)
+                            nb_height = gr.Number(label="Height.", value=512, precision=0)
                             nb_video_frame_length = gr.Number(label="Video Frame Length", value=300, precision=0)
                             nb_video_slice_frame_length = gr.Number(label="Video Slice Frame Number", value=48, precision=0)
                             nb_video_slice_overlap_frame_number = gr.Number(label="Video Slice Overlap Frame Number", value=4, precision=0)
