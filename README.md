@@ -1,8 +1,10 @@
 # MusePose SD WebUI Extension
 [MusePose](https://github.com/TMElyralab/MusePose) extension for the [SD WebUI](https://github.com/AUTOMATIC1111/stable-diffusion-webui).
+![screenshot](https://github.com/jhj0517/stable-diffusion-webui-MusePose/assets/97279763/aa982503-50c2-4093-9319-38510d51160b)
+
 
 ## OverView
-When running, this will download a **total of 9 models** to your `path_to_sd_webui\models\` directory if there are no models.
+When running, this will download a **total of 9 models** (15GB total) to your `path_to_sd_webui\models\` directory if there are no models.
 ```
 ./models/
 |-- MusePose
