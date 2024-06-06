@@ -16,7 +16,7 @@ pose_alignment_infer = PoseAlignmentInference()
 def add_tab():
     with gr.Blocks() as tab:
         with gr.Tabs():
-            with gr.TabItem('Pose Alignment'):
+            with gr.TabItem('Step1: Pose Alignment'):
                 with gr.Row():
                     with gr.Column(scale=3):
                         img_input = gr.Image(label="Input Image here", type="filepath", scale=5)
@@ -39,7 +39,7 @@ def add_tab():
                                  inputs=[vid_dance_input, img_input, nb_detect_resolution, nb_image_resolution, nb_align_frame, nb_max_frame],
                                  outputs=[vid_dance_output])
 
-            with gr.TabItem('MusePose Inference'):
+            with gr.TabItem('Step2: MusePose Inference'):
                 with gr.Row():
                     with gr.Column(scale=3):
                         img_input = gr.Image(label="Input Image here", type="filepath", scale=5)
@@ -51,8 +51,8 @@ def add_tab():
                         with gr.Column():
                             weight_dtype = gr.Dropdown(label="Compute Type", choices=["float16", "float32"],
                                                        value="float16")
-                            nb_width = gr.Number(label="Width", value=768, precision=0)
-                            nb_height = gr.Number(label="Height", value=768, precision=0)
+                            nb_width = gr.Number(label="Width", value=512, precision=0)
+                            nb_height = gr.Number(label="Height", value=512, precision=0)
                             nb_video_frame_length = gr.Number(label="Video Frame Length", value=300, precision=0)
                             nb_video_slice_frame_length = gr.Number(label="Video Slice Frame Number", value=48, precision=0)
                             nb_video_slice_overlap_frame_number = gr.Number(label="Video Slice Overlap Frame Number", value=4, precision=0)
