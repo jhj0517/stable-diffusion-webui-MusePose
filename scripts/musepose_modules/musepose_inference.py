@@ -12,6 +12,7 @@ from torchvision import transforms
 from transformers import CLIPVisionModelWithProjection
 import glob
 import torch.nn.functional as F
+import gc
 
 from scripts.musepose_modules.musepose.models.pose_guider import PoseGuider
 from scripts.musepose_modules.musepose.models.unet_2d_condition import UNet2DConditionModel
@@ -209,6 +210,16 @@ class MusePoseInference:
 
         return output_path
 
+    def release_models(self):
+        self.vae = None
+        self.reference_unet = None
+        self.denoising_unet = None
+        self.pose_guider = None
+        self.image_enc = None
+        self.pipe = None
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+        gc.collect()
 
     @staticmethod
     def scale_video(video, width, height):
@@ -218,6 +229,7 @@ class MusePoseInference:
                                          width)  # [batch, frames, channels, height, width]
 
         return scaled_video
+
 
 
 

@@ -14,6 +14,9 @@ musepose_infer = MusePoseInference()
 pose_alignment_infer = PoseAlignmentInference()
 
 def add_tab():
+    global musepose_infer
+    global pose_alignment_infer
+
     with gr.Blocks() as tab:
         with gr.Tabs():
             with gr.TabItem('Step1: Pose Alignment'):
