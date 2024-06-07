@@ -25,6 +25,16 @@ from modules import safe
 
 class MusePoseInference:
     def __init__(self):
+        self.models_paths = {
+            "pretrained_base_model": os.path.join(models_dir, "sd-image-variations-diffusers"),
+            "pretrained_vae": os.path.join(models_dir, "sd-vae-ft-mse"),
+            "image_encoder": os.path.join(models_dir, "image_encoder"),
+            "denoising_unet": os.path.join(models_dir, "MusePose","denoising_unet.pth"),
+            "reference_unet": os.path.join(models_dir, "MusePose","reference_unet.pth"),
+            "pose_guider": os.path.join(models_dir, "MusePose","pose_guider.pth"),
+            "motion_module": os.path.join(models_dir, "MusePose","motion_module.pth"),
+            "inference_config": os.path.join(musepose_module_dir, "configs", "inference_v2.yaml")
+        }
         self.vae = None
         self.reference_unet = None
         self.denoising_unet = None
@@ -69,20 +79,20 @@ class MusePoseInference:
 
         torch.load = safe.unsafe_torch_load
         self.vae = AutoencoderKL.from_pretrained(
-            os.path.join(models_dir, "sd-vae-ft-mse"),
+            self.models_paths["pretrained_vae"],
         ).to("cuda", dtype=weight_dtype)
 
         self.reference_unet = UNet2DConditionModel.from_pretrained(
-            os.path.join(models_dir, "sd-image-variations-diffusers"),
+            self.models_paths["pretrained_base_model"],
             subfolder="unet",
         ).to(dtype=weight_dtype, device="cuda")
 
-        inference_config_path = os.path.join(musepose_module_dir, "configs", "inference_v2.yaml")
+        inference_config_path = self.models_paths["inference_config"]
         infer_config = OmegaConf.load(inference_config_path)
 
         self.denoising_unet = UNet3DConditionModel.from_pretrained_2d(
-            Path(os.path.join(models_dir, "sd-image-variations-diffusers")),
-            Path(os.path.join(models_dir, "MusePose","motion_module.pth")),
+            Path(self.models_paths["pretrained_base_model"]),
+            Path(self.models_paths["motion_module"]),
             subfolder="unet",
             unet_additional_kwargs=infer_config.unet_additional_kwargs,
         ).to(dtype=weight_dtype, device="cuda")
@@ -104,14 +114,14 @@ class MusePoseInference:
 
         # load pretrained weights
         self.denoising_unet.load_state_dict(
-            torch.load(os.path.join(models_dir, "MusePose","denoising_unet.pth"), map_location="cpu"),
+            torch.load(self.models_paths["denoising_unet"], map_location="cpu"),
             strict=False,
         )
         self.reference_unet.load_state_dict(
-            torch.load(os.path.join(models_dir, "MusePose","reference_unet.pth"), map_location="cpu"),
+            torch.load(self.models_paths["reference_unet"], map_location="cpu"),
         )
         self.pose_guider.load_state_dict(
-            torch.load(os.path.join(models_dir, "MusePose","pose_guider.pth"), map_location="cpu"),
+            torch.load(self.models_paths["pose_guider"], map_location="cpu"),
         )
         torch.load = safe.load
         self.pipe = Pose2VideoPipeline(
