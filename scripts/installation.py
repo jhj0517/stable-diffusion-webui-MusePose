@@ -52,6 +52,7 @@ def install_musepose():
         "mmengine==0.10.4",
         "mmdet==3.3.0",
         "mmpose==1.3.1",
+        "xformers==0.0.23.post1"
     ]
 
     for command in problematic_packages:
