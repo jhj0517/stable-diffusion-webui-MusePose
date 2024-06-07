@@ -11,7 +11,11 @@ def install_package(install_command):
     else:
         command = install_command.split()
 
-    subprocess.check_call([sys.executable, "-m", "pip", "install"] + command)
+    subprocess.check_call(
+        [sys.executable, "-m", "pip", "install"] + command,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.STDOUT
+    )
 
 
 def get_package_name(line):
@@ -32,7 +36,6 @@ def get_package_name(line):
     return None
 
 def install_musepose():
-    print(f"\nDetected python: {sys.executable}\n")
     req_file_path = os.path.join(extension_dir, 'musepose_requirements.txt')
 
     from launch import is_installed, run_pip
