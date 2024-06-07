@@ -51,6 +51,8 @@ The output will be saved in
 `path_to_sd_webui\outputs\MusePose\inference_musepose`
 
 # How to Install & Use
+
+
 - Download & unzip this [repository](https://github.com/jhj0517/stable-diffusion-webui-MusePose/zipball/master) to `path_to_sd_webui\extensions\`
 - Input image & input dancing video and click "ALIGN POSE" button in **Step1: Pose Alignment** tab.
 ![step1](https://github.com/jhj0517/stable-diffusion-webui-MusePose/assets/97279763/54a787ee-5bbc-4889-a9a9-453195fdab0b)
@@ -59,9 +61,18 @@ Once the process is done, the aligned pose video will be saved in `path_to_sd_we
 ![step2](https://github.com/jhj0517/stable-diffusion-webui-MusePose/assets/97279763/30058906-06e2-4700-b622-bc023cb40d53)
 Once the process is done, the output will be displayed in the right cell and saved in `path_to_sd_webui\outputs\MusePose\musepose_inference`. 
 
-### Troubleshooting for Forge
-If you are using [Forge](https://github.com/lllyasviel/stable-diffusion-webui-forge) instead of just SD WebUI, you need to do some workarounds because of the different dependency issue.<br>
-If you get a "cvDestroyAllWindows" error, run
+### !!Troubleshooting!!
+If you encounter "Access is denied" error during installation and the MusePose tab doesn't appear, it's because WebUI's venv prevents installing some dependencies.<br>
+To fix this, you need to manually activate the venv and install these packages. 
+1. Open the terminal in the WebUI and activate the venv
+```
+C:\YourPath\To_SD_WebUI>venv\Scripts\activate
+```
+Then it will display (venv) in front of the terminal like this.
+```
+(venv) (venv) C:\YourPath\To_SD_WebUI>
+```
+2. In this state, run
 ```
 pip uninstall opencv-python-headless
 pip uninstall opencv-python
@@ -69,5 +80,4 @@ pip uninstall opencv-contrib-python
 pip install opencv-python
 pip install opencv-contrib-python
 ```
-
 
