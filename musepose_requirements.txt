@@ -10,5 +10,5 @@ opencv-contrib-python==4.8.1.78
 opencv-python==4.8.1.78
 decord==0.6.0; sys_platform != 'darwin' and platform_machine != 'arm64'
 eva-decord==0.6.1; sys_platform == 'darwin' and platform_machine == 'arm64'
-xformers==0.0.23.post1
+xformers
 moviepy==1.0.3
