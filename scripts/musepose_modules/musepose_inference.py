@@ -32,7 +32,8 @@ class MusePoseInference:
             "denoising_unet": os.path.join(models_dir, "MusePose","denoising_unet.pth"),
             "reference_unet": os.path.join(models_dir, "MusePose","reference_unet.pth"),
             "pose_guider": os.path.join(models_dir, "MusePose","pose_guider.pth"),
-            "motion_module": os.path.join(models_dir, "MusePose","motion_module.pth")
+            "motion_module": os.path.join(models_dir, "MusePose","motion_module.pth"),
+            "inference_config": os.path.join(musepose_module_dir, "configs", "inference_v2.yaml")
         }
         self.vae = None
         self.reference_unet = None
@@ -86,7 +87,7 @@ class MusePoseInference:
             subfolder="unet",
         ).to(dtype=weight_dtype, device="cuda")
 
-        inference_config_path = os.path.join(musepose_module_dir, "configs", "inference_v2.yaml")
+        inference_config_path = self.models_paths["inference_config"]
         infer_config = OmegaConf.load(inference_config_path)
 
         self.denoising_unet = UNet3DConditionModel.from_pretrained_2d(
