@@ -2,6 +2,7 @@ import os
 import argparse
 from datetime import datetime
 from pathlib import Path
+import time
 
 import torch
 from diffusers import AutoencoderKL, DDIMScheduler
@@ -207,7 +208,7 @@ class MusePoseInference:
             n_rows=3,
             fps=src_fps if fps is None else fps,
         )
-
+        self.release_models()
         return output_path
 
     def release_models(self):
