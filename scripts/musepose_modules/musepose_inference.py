@@ -208,16 +208,21 @@ class MusePoseInference:
             n_rows=3,
             fps=src_fps if fps is None else fps,
         )
-        self.release_models()
+        self.release_vram()
         return output_path
 
-    def release_models(self):
-        self.vae = None
-        self.reference_unet = None
-        self.denoising_unet = None
-        self.pose_guider = None
-        self.image_enc = None
-        self.pipe = None
+    def release_vram(self):
+        models = [
+            'vae', 'reference_unet', 'denoising_unet',
+            'pose_guider', 'image_enc', 'pipe'
+        ]
+
+        for model_name in models:
+            model = getattr(self, model_name, None)
+            if model is not None:
+                del model
+                setattr(self, model_name, None)
+
         if torch.cuda.is_available():
             torch.cuda.empty_cache()
         gc.collect()

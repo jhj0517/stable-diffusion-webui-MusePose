@@ -308,14 +308,16 @@ class PoseAlignmentInference:
         clip = moviepy.video.io.ImageSequenceClip.ImageSequenceClip(result_pose_only, fps=fps)
         clip.write_videofile(outfn_align_pose_video, fps=fps)
         print('pose align done')
-        self.release_models()
+        self.release_vram()
         return outfn_align_pose_video
 
-    def release_models(self):
-        self.detector = None
-        if torch.cuda.is_available():
-            torch.cuda.empty_cache()
-        gc.collect()
+    def release_vram(self):
+        if self.detector is not None:
+            del self.detector
+            self.detector = None
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+            gc.collect()
 
     @staticmethod
     def align_img(img, pose_ori, scales, detect_resolution, image_resolution):
