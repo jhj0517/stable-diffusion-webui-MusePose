@@ -62,7 +62,7 @@ def add_tab():
                             nb_cfg = gr.Number(label="CFG (Classifier Free Guidance)", value=3.5, precision=0)
                             nb_seed = gr.Number(label="Seed", value=99, precision=0)
                             nb_steps = gr.Number(label="DDIM Sampling Steps", value=20, precision=0)
-                            nb_fps = gr.Number(label="FPS (Frames Per Second)", value=-1, precision=0, info="Set it to -1 to use same FPS with original's")
+                            nb_fps = gr.Number(label="FPS (Frames Per Second) ", value=-1, precision=0, info="Set to '-1' to use same FPS with pose's")
                             nb_skip = gr.Number(label="SKIP (Frame Sample Rate = SKIP+1)", value=1, precision=0)
 
                         with gr.Row():
