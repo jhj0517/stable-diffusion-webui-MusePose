@@ -70,7 +70,7 @@ class MusePoseInference:
         print('DDIM sampling steps :', steps)
         print("skip", skip)
 
-        dt_file_name = datetime.now().strftime("%Y-%m-%d_%H-%M-%S.mp4")
+        dt_file_name = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         output_path = os.path.abspath(os.path.join(final_output_dir, f'{dt_file_name}.mp4'))
         output_path_demo = os.path.abspath(os.path.join(final_output_dir, f'{dt_file_name}_demo.mp4'))
 
