@@ -197,7 +197,7 @@ class MusePoseInference:
             result,
             output_path,
             n_rows=1,
-            fps=src_fps if fps is None else fps,
+            fps=src_fps if fps is None or fps < 0 else fps,
         )
 
         video = torch.cat([ref_image_tensor, pose_tensor[:, :, :L], video[:, :, :L]], dim=0)
@@ -206,7 +206,7 @@ class MusePoseInference:
             video,
             output_path_demo,
             n_rows=3,
-            fps=src_fps if fps is None else fps,
+            fps=src_fps if fps is None or fps < 0 else fps,
         )
         self.release_vram()
         return output_path
