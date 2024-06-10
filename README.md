@@ -70,7 +70,7 @@ C:\YourPath\To_SD_WebUI>venv\Scripts\activate
 ```
 Then it will display (venv) in front of the terminal like this.
 ```
-(venv) (venv) C:\YourPath\To_SD_WebUI>
+(venv) C:\YourPath\To_SD_WebUI>
 ```
 2. In this state, run
 ```
