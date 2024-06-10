@@ -42,7 +42,7 @@ class PoseAlignmentInference:
     ):
         download_models()
 
-        dt_file_name = datetime.now().strftime("%Y-%m-%d_%H-%M-%S.mp4")
+        dt_file_name = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         outfn=os.path.abspath(os.path.join(pose_output_dir, f'{dt_file_name}_demo.mp4'))
         outfn_align_pose_video=os.path.abspath(os.path.join(pose_output_dir, f'{dt_file_name}.mp4'))
 
