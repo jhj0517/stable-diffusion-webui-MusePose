@@ -59,7 +59,7 @@ Once the process is done, the aligned pose video will be saved in `path_to_sd_we
 ![step2](https://github.com/jhj0517/stable-diffusion-webui-MusePose/assets/97279763/30058906-06e2-4700-b622-bc023cb40d53)
 Once the process is done, the output will be displayed in the right cell and saved in `path_to_sd_webui\outputs\MusePose\musepose_inference`. 
 
-# Troubleshooting Installation
+# Troubleshooting For Installation
 If you encounter error during installation and the MusePose tab doesn't appear, it's because WebUI's venv prevents installing some dependencies.<br>
 To fix this, you need to manually activate the venv and install these packages. 
 1. Open the terminal in the WebUI and activate the venv
