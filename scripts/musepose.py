@@ -1,4 +1,5 @@
 import gradio as gr
+from packaging import version
 import os
 
 from scripts.installation import *
@@ -7,11 +8,11 @@ from scripts.musepose_modules.ui_utils import *
 from scripts.musepose_modules.paths import *
 from scripts.musepose_modules.pose_align import PoseAlignmentInference
 from scripts.musepose_modules.musepose_inference import MusePoseInference
-
 from modules import scripts, script_callbacks
 
 musepose_infer = MusePoseInference()
 pose_alignment_infer = PoseAlignmentInference()
+
 
 def add_tab():
     global musepose_infer
@@ -22,10 +23,10 @@ def add_tab():
             with gr.TabItem('Step1: Pose Alignment'):
                 with gr.Row():
                     with gr.Column(scale=3):
-                        img_input = gr.Image(label="Input Image here", type="filepath", scale=5)
+                        img_pose_input = gr.Image(label="Input Image", type="filepath", scale=5)
                         vid_dance_input = gr.Video(label="Input Dance Video", scale=5)
                     with gr.Column(scale=3):
-                        vid_dance_output = gr.Video(label="Aligned Pose Output will be displayed here")
+                        vid_dance_output = gr.Video(label="Aligned Pose Output")
                     with gr.Column(scale=3):
                         with gr.Column():
                             nb_detect_resolution = gr.Number(label="Detect Resolution", value=512, precision=0)
@@ -39,16 +40,16 @@ def add_tab():
 
             btn_open_pose_output_folder.click(fn=lambda: open_folder(pose_output_dir), inputs=None, outputs=None)
             btn_algin_pose.click(fn=pose_alignment_infer.align_pose,
-                                 inputs=[vid_dance_input, img_input, nb_detect_resolution, nb_image_resolution, nb_align_frame, nb_max_frame],
+                                 inputs=[vid_dance_input, img_pose_input, nb_detect_resolution, nb_image_resolution, nb_align_frame, nb_max_frame],
                                  outputs=[vid_dance_output])
 
             with gr.TabItem('Step2: MusePose Inference'):
                 with gr.Row():
                     with gr.Column(scale=3):
-                        img_input = gr.Image(label="Input Image here", type="filepath", scale=5)
-                        vid_pose_input = gr.Video(label="Input Aligned Pose Video here", scale=5)
+                        img_musepose_input = gr.Image(label="Input Image", type="filepath", scale=5)
+                        vid_pose_input = gr.Video(label="Input Aligned Pose", scale=5)
                     with gr.Column(scale=3):
-                        vid_output = gr.Video(label="Output Video will be displayed here", scale=8)
+                        vid_output = gr.Video(label="MusePose Output", scale=8)
 
                     with gr.Column(scale=3):
                         with gr.Column():
@@ -71,10 +72,16 @@ def add_tab():
 
             btn_open_final_output_folder.click(fn=lambda: open_folder(final_output_dir), inputs=None, outputs=None)
             btn_generate.click(fn=musepose_infer.infer_musepose,
-                               inputs=[img_input, vid_pose_input, weight_dtype, nb_width, nb_height, nb_video_frame_length,
+                               inputs=[img_musepose_input, vid_pose_input, weight_dtype, nb_width, nb_height, nb_video_frame_length,
                                        nb_video_slice_frame_length, nb_video_slice_overlap_frame_number, nb_cfg, nb_seed,
                                        nb_steps, nb_fps, nb_skip],
                                outputs=[vid_output])
+
+            if version.parse(gr.__version__) >= version.parse("4.36.1"):
+                vid_dance_output.change(fn=on_step1_complete,
+                                        inputs=[img_pose_input, vid_dance_output],
+                                        outputs=[img_musepose_input, vid_pose_input])
+
 
         return [(tab, "MusePose", "musepose")]
 
