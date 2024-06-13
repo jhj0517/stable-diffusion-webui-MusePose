@@ -1,4 +1,5 @@
 import gradio as gr
+from packaging import version
 import os
 
 from scripts.installation import *
@@ -7,11 +8,11 @@ from scripts.musepose_modules.ui_utils import *
 from scripts.musepose_modules.paths import *
 from scripts.musepose_modules.pose_align import PoseAlignmentInference
 from scripts.musepose_modules.musepose_inference import MusePoseInference
-
 from modules import scripts, script_callbacks
 
 musepose_infer = MusePoseInference()
 pose_alignment_infer = PoseAlignmentInference()
+
 
 def add_tab():
     global musepose_infer
@@ -75,9 +76,11 @@ def add_tab():
                                        nb_video_slice_frame_length, nb_video_slice_overlap_frame_number, nb_cfg, nb_seed,
                                        nb_steps, nb_fps, nb_skip],
                                outputs=[vid_output])
-            vid_dance_output.change(fn=on_step1_complete,
-                                    inputs=[img_pose_input, vid_dance_output],
-                                    outputs=[img_musepose_input, vid_pose_input])
+
+            if version.parse(gr.__version__) >= version.parse("4.36.1"):
+                vid_dance_output.change(fn=on_step1_complete,
+                                        inputs=[img_pose_input, vid_dance_output],
+                                        outputs=[img_musepose_input, vid_pose_input])
 
 
         return [(tab, "MusePose", "musepose")]
